@@ -58,16 +58,20 @@ Membandingkan deep learning 2024 dengan decision tree sederhana tanpa justifikas
 
 ## Template A.3 — Literature Mapping & Gap Identification
 
-```
-LITERATURE MAPPING
 
-Topik      : Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika
-Database   : Google Scholar
-Query      : "algoritma genetika penjadwalan produksi makespan Indonesia"
-Tahun      : 2020–2025
-Hasil awal : 30 paper → Screening → 5 paper final
+# WS-03: Literature Mapping & Gap
 
-Literature Matrix (concept-centric):
+## LITERATURE MAPPING
+
+**Topik**      : Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika  
+**Database**   : Google Scholar  
+**Query**      : ("algoritma genetika" OR "genetic algorithm") AND ("penjadwalan produksi" OR "scheduling") AND ("makespan")  
+**Tahun**      : 2020–2025  
+**Hasil awal** : 30 paper → Screening → 5 paper final  
+
+---
+
+## Literature Matrix (concept-centric)
 
 | Study              | Tahun | Method                 | Data                     | Result                                   | Limitation                                      |
 |--------------------|-------|------------------------|--------------------------|------------------------------------------|-------------------------------------------------|
@@ -77,89 +81,116 @@ Literature Matrix (concept-centric):
 | Lestari et al.     | 2023  | Genetic Algorithm      | Penjadwalan perkuliahan  | Mengurangi konflik jadwal                | Model sederhana dan tidak kompleks              |
 | Siregar et al.     | 2024  | GA + Neural Network    | Simulasi produksi        | Lebih efisien dari metode konvensional   | Kompleks dan sulit diimplementasikan            |
 
-Pola yang ditemukan:
-Metode dominan     : Genetic Algorithm (GA)
-Dataset umum       : Produksi industri dan penjadwalan akademik
-Limitasi berulang  : Fokus hanya pada makespan, belum mempertimbangkan energi dan availability, asumsi sistem ideal, serta minim perbandingan metode
+---
 
-GAP IDENTIFICATION
+## Pola yang ditemukan
 
-Gap 1: [Jenis: performance + method]
-Deskripsi    : Sebagian besar penelitian hanya berfokus pada minimasi makespan tanpa mempertimbangkan faktor lain seperti konsumsi energi dan availability mesin.
-Bukti        : Hampir seluruh penelitian menggunakan fungsi objektif tunggal berupa waktu penyelesaian produksi.
-Signifikansi : Dalam sistem produksi nyata, efisiensi tidak hanya ditentukan oleh waktu tetapi juga oleh penggunaan energi dan keandalan mesin, sehingga pendekatan single-objective menjadi kurang optimal.
+- **Metode dominan**     : Genetic Algorithm (GA)  
+- **Dataset umum**       : Produksi industri dan penjadwalan akademik  
+- **Limitasi berulang**  :  
+  - Fokus hanya pada makespan (single-objective)  
+  - Tidak mempertimbangkan energi dan availability mesin  
+  - Menggunakan asumsi sistem ideal (tanpa gangguan)  
+  - Minim pendekatan multi-objective  
 
-Gap 2: [Jenis: context]
-Deskripsi    : Model dalam penelitian sebelumnya menggunakan asumsi kondisi ideal seperti mesin selalu tersedia dan tidak ada gangguan produksi.
-Bukti        : Sebagian besar penelitian berbasis simulasi atau kondisi stabil tanpa mempertimbangkan ketidakpastian sistem.
-Signifikansi : Hal ini menyebabkan hasil penelitian sulit diterapkan secara langsung pada kondisi industri yang dinamis.
+---
 
-Baseline Selection:
+## GAP IDENTIFICATION
+
+### Gap 1 (Performance + Method Gap)
+- **Deskripsi**  
+  Sebagian besar penelitian hanya mengoptimalkan makespan tanpa mempertimbangkan faktor lain seperti konsumsi energi dan availability mesin.  
+- **Bukti**  
+  Hampir semua studi menggunakan fungsi objektif tunggal (makespan).  
+- **Signifikansi**  
+  Dalam industri nyata, efisiensi tidak hanya ditentukan oleh waktu, tetapi juga oleh efisiensi energi dan keandalan mesin.
+
+---
+
+### Gap 2 (Context Gap)
+- **Deskripsi**  
+  Model penelitian masih menggunakan asumsi kondisi ideal (mesin selalu tersedia, tanpa gangguan).  
+- **Bukti**  
+  Banyak penelitian berbasis simulasi tanpa mempertimbangkan dinamika produksi nyata.  
+- **Signifikansi**  
+  Hal ini membuat hasil penelitian kurang aplikatif di lingkungan industri sebenarnya.
+
+---
+
+## Baseline Selection
 
 | Baseline            | Relevansi                                 | Representatif                          | Source              |
 |---------------------|--------------------------------------------|----------------------------------------|---------------------|
-| GA + SPT + EFT      | Digunakan pada penjadwalan produksi nyata  | Metode umum pada studi industri        | Hatim & Ahmad, 2022 |
+| GA + SPT + EFT      | Digunakan pada penjadwalan produksi nyata  | Metode umum dalam studi industri       | Hatim & Ahmad, 2022 |
 | Genetic Algorithm   | Digunakan pada berbagai kasus scheduling   | Common practice dalam penelitian       | Hafiz et al., 2023  |
 
+---
 
-Latihan 1 — Concept-Centric Literature Table
+# Latihan 1 — Concept-Centric Literature Table
 
-Topik riset:
-Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika
+**Topik riset:**  
+Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika  
 
-Query pencarian:
-"algoritma genetika penjadwalan produksi Indonesia"
+**Query pencarian:**  
+("genetic algorithm" OR "algoritma genetika") AND ("production scheduling" OR "penjadwalan produksi")  
 
-Database:
-Google Scholar
+**Database:**  
+Google Scholar  
 
-| # | Study            | Tahun | Method       | Dataset    | Result           | Limitasi          |
-|---|------------------|-------|-------------|-----------|------------------|-------------------|
-| 1 | Hatim & Ahmad    | 2022  | GA + SPT     | Industri  | Makespan turun   | Hanya makespan    |
-| 2 | Praniasty et al. | 2024  | GA          | Produksi  | Lebih optimal    | Tidak ada energi  |
-| 3 | Hafiz et al.     | 2023  | GA          | Mesin     | Optimasi waktu   | Single-objective  |
-| 4 | Lestari et al.   | 2023  | GA          | Kuliah    | Minim konflik    | Sederhana         |
-| 5 | Siregar et al.   | 2024  | GA + NN     | Simulasi  | Lebih efisien    | Kompleks          |
+| # | Study            | Tahun | Method   | Dataset   | Result         | Limitasi         |
+|---|------------------|-------|----------|-----------|----------------|------------------|
+| 1 | Hatim & Ahmad    | 2022  | GA + SPT | Industri  | Makespan turun | Hanya makespan   |
+| 2 | Praniasty et al. | 2024  | GA       | Produksi  | Lebih optimal  | Tidak ada energi |
+| 3 | Hafiz et al.     | 2023  | GA       | Mesin     | Optimasi waktu | Single-objective |
+| 4 | Lestari et al.   | 2023  | GA       | Kuliah    | Minim konflik  | Sederhana        |
+| 5 | Siregar et al.   | 2024  | GA + NN  | Simulasi  | Lebih efisien  | Kompleks         |
 
-Pola yang terlihat — Metode dominan:
-Genetic Algorithm (GA)
+**Pola yang terlihat — Metode dominan:**  
+Genetic Algorithm (GA)  
 
-Limitasi yang berulang:
-Fokus pada makespan, tidak mempertimbangkan energi dan availability, serta asumsi sistem ideal
+**Limitasi yang berulang:**  
+Fokus pada makespan, tidak mempertimbangkan energi dan availability, serta asumsi sistem ideal  
 
+---
 
-Latihan 2 — Gap Identification
+# Latihan 2 — Gap Identification
 
 | Jenis Gap        | Ditemukan? | Gap Statement |
 |------------------|-----------|---------------|
-| Performance Gap  | [✓] Ya    | Optimasi hanya pada makespan tanpa mempertimbangkan efisiensi energi |
-| Method Gap       | [✓] Ya    | Belum banyak pendekatan multi-objective sederhana |
-| Data Gap         | [ ] Tidak | |
-| Context Gap      | [✓] Ya    | Model tidak mencerminkan kondisi nyata (mesin selalu stabil) |
+| Performance Gap  | ✓ Ya      | Optimasi hanya pada makespan tanpa mempertimbangkan efisiensi energi |
+| Method Gap       | ✓ Ya      | Belum banyak pendekatan multi-objective sederhana |
+| Data Gap         | Tidak     | |
+| Context Gap      | ✓ Ya      | Model tidak mencerminkan kondisi nyata |
 
-Gap utama yang dipilih:
+**Gap utama yang dipilih:**  
 Multi-objective scheduling (makespan + energi + availability)
 
-Mengapa gap ini penting:
-Karena dalam sistem produksi nyata, efisiensi tidak hanya ditentukan oleh waktu penyelesaian tetapi juga oleh konsumsi energi dan keandalan mesin. Pendekatan yang hanya fokus pada makespan tidak cukup untuk menghasilkan solusi yang optimal secara praktis dan aplikatif di industri.
+**Mengapa gap ini penting:**  
+Karena dalam sistem produksi nyata, efisiensi tidak hanya ditentukan oleh waktu penyelesaian tetapi juga oleh konsumsi energi dan keandalan mesin. Pendekatan single-objective tidak cukup untuk menghasilkan solusi optimal yang aplikatif di industri.
 
+---
 
-Latihan 3 — Baseline Selection
+# Latihan 3 — Baseline Selection
 
-| # | Baseline                 | Mengapa Relevan                         | Mengapa Representatif              | Apakah SOTA? | Sumber                 |
-|---|--------------------------|----------------------------------------|------------------------------------|-------------|------------------------|
-| 1 | GA + SPT + EFT          | Sama dengan kasus penjadwalan produksi | Digunakan dalam studi industri     | Tidak       | Hatim & Ahmad, 2022    |
-| 2 | Genetic Algorithm       | Digunakan di hampir semua penelitian   | Common practice dalam scheduling   | Tidak       | Hafiz et al., 2023     |
+| # | Baseline               | Mengapa Relevan                         | Mengapa Representatif              | Apakah SOTA? | Sumber |
+|---|------------------------|----------------------------------------|------------------------------------|-------------|--------|
+| 1 | GA + SPT + EFT        | Sama dengan kasus penjadwalan produksi | Digunakan dalam studi industri     | Tidak       | Hatim & Ahmad, 2022 |
+| 2 | Genetic Algorithm     | Digunakan di hampir semua penelitian   | Common practice dalam scheduling   | Tidak       | Hafiz et al., 2023 |
 
-Apakah pemilihan baseline ini bisa dianggap straw man? [ ] Tidak
+**Apakah pemilihan baseline ini bisa dianggap straw man?** Tidak  
 
-Justifikasi:
-Baseline yang digunakan merupakan metode yang relevan dan umum digunakan dalam penelitian sebelumnya sehingga perbandingan tetap adil dan tidak bias.
+**Justifikasi:**  
+Baseline yang digunakan relevan dan umum digunakan dalam penelitian sebelumnya, sehingga perbandingan tetap adil dan tidak bias.
 
+---
 
-Refleksi
+# Refleksi
 
-Jawaban:
-Perbedaan antara klaim “belum ada yang meneliti ini” dengan research gap yang valid terletak pada adanya bukti ilmiah. Research gap yang valid harus didasarkan pada hasil analisis beberapa penelitian sebelumnya yang menunjukkan adanya keterbatasan atau kekurangan yang konsisten.
+Perbedaan antara klaim “belum ada yang meneliti ini” dengan research gap yang valid terletak pada adanya bukti ilmiah. Research gap harus didasarkan pada analisis beberapa penelitian yang menunjukkan keterbatasan yang konsisten.
 
-Cara membuktikan gap adalah dengan melakukan pencarian literatur secara sistematis, kemudian mengidentifikasi pola limitasi yang berulang, seperti metode yang hanya fokus pada satu variabel atau asumsi yang tidak realistis. Dengan demikian, gap yang diambil memiliki dasar yang kuat dan relevan untuk dikembangkan dalam penelitian selanjutnya.
+Cara membuktikan gap:
+- Melakukan pencarian literatur secara sistematis  
+- Menggunakan query yang jelas dan terdokumentasi  
+- Mengidentifikasi pola limitasi yang berulang  
+
+Dengan demikian, gap yang diambil memiliki dasar yang kuat dan layak untuk diteliti.
