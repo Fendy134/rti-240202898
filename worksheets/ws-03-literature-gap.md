@@ -61,99 +61,105 @@ Membandingkan deep learning 2024 dengan decision tree sederhana tanpa justifikas
 ```
 LITERATURE MAPPING
 
-Topik      : ____________________
-Database   : ____________________
-Query      : ____________________
-Tahun      : ____________________
-Hasil awal : ____ paper → Screening → ____ paper final
+Topik      : Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika
+Database   : Google Scholar
+Query      : "algoritma genetika penjadwalan produksi makespan Indonesia"
+Tahun      : 2020–2025
+Hasil awal : 30 paper → Screening → 5 paper final
 
 Literature Matrix (concept-centric):
 
-| Study | Tahun | Method | Data | Result | Limitation |
-|-------|-------|--------|------|--------|------------|
-|       |       |        |      |        |            |
+| Study              | Tahun | Method                 | Data                     | Result                                   | Limitation                                      |
+|--------------------|-------|------------------------|--------------------------|------------------------------------------|-------------------------------------------------|
+| Hatim & Ahmad      | 2022  | GA + SPT + EFT         | Industri manufaktur      | Makespan turun ±20%                      | Hanya fokus makespan, asumsi mesin stabil       |
+| Praniasty et al.   | 2024  | GA vs Tabu Search      | Produksi industri        | GA lebih optimal dari metode perusahaan  | Tidak mempertimbangkan energi & availability    |
+| Hafiz et al.       | 2023  | Genetic Algorithm      | Penjadwalan mesin        | Optimasi waktu proses                    | Single-objective (makespan saja)                |
+| Lestari et al.     | 2023  | Genetic Algorithm      | Penjadwalan perkuliahan  | Mengurangi konflik jadwal                | Model sederhana dan tidak kompleks              |
+| Siregar et al.     | 2024  | GA + Neural Network    | Simulasi produksi        | Lebih efisien dari metode konvensional   | Kompleks dan sulit diimplementasikan            |
 
 Pola yang ditemukan:
-  Metode dominan     : ____________________
-  Dataset umum       : ____________________
-  Limitasi berulang  : ____________________
+Metode dominan     : Genetic Algorithm (GA)
+Dataset umum       : Produksi industri dan penjadwalan akademik
+Limitasi berulang  : Fokus hanya pada makespan, belum mempertimbangkan energi dan availability, asumsi sistem ideal, serta minim perbandingan metode
 
 GAP IDENTIFICATION
 
-Gap 1: [Jenis: performance / method / data / context]
-  Deskripsi    : ____________________
-  Bukti        : ____________________
-  Signifikansi : ____________________
+Gap 1: [Jenis: performance + method]
+Deskripsi    : Sebagian besar penelitian hanya berfokus pada minimasi makespan tanpa mempertimbangkan faktor lain seperti konsumsi energi dan availability mesin.
+Bukti        : Hampir seluruh penelitian menggunakan fungsi objektif tunggal berupa waktu penyelesaian produksi.
+Signifikansi : Dalam sistem produksi nyata, efisiensi tidak hanya ditentukan oleh waktu tetapi juga oleh penggunaan energi dan keandalan mesin, sehingga pendekatan single-objective menjadi kurang optimal.
 
-Gap 2: [Jenis: ____]
-  Deskripsi    : ____________________
-  Bukti        : ____________________
-  Signifikansi : ____________________
+Gap 2: [Jenis: context]
+Deskripsi    : Model dalam penelitian sebelumnya menggunakan asumsi kondisi ideal seperti mesin selalu tersedia dan tidak ada gangguan produksi.
+Bukti        : Sebagian besar penelitian berbasis simulasi atau kondisi stabil tanpa mempertimbangkan ketidakpastian sistem.
+Signifikansi : Hal ini menyebabkan hasil penelitian sulit diterapkan secara langsung pada kondisi industri yang dinamis.
 
 Baseline Selection:
-| Baseline | Relevansi | Representatif | Source |
-|----------|-----------|---------------|--------|
-|          |           |               |        |
-```
 
----
+| Baseline            | Relevansi                                 | Representatif                          | Source              |
+|---------------------|--------------------------------------------|----------------------------------------|---------------------|
+| GA + SPT + EFT      | Digunakan pada penjadwalan produksi nyata  | Metode umum pada studi industri        | Hatim & Ahmad, 2022 |
+| Genetic Algorithm   | Digunakan pada berbagai kasus scheduling   | Common practice dalam penelitian       | Hafiz et al., 2023  |
 
-## Latihan 1 — Concept-Centric Literature Table
 
-Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
+Latihan 1 — Concept-Centric Literature Table
 
-**Topik riset:** ________________________________________
-**Query pencarian:** ____________________________________
-**Database:** ___________________________________________
+Topik riset:
+Optimasi Penjadwalan Produksi Menggunakan Algoritma Genetika
 
-| # | Study | Tahun | Method | Dataset | Result | Limitasi |
-|---|-------|-------|--------|---------|--------|----------|
-| 1 | *Contoh: Rahman et al.* | *2023* | *CNN* | *ImageNet subset* | *Acc 91%* | *Hanya 3 kelas* |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
-| 5 | | | | | | |
+Query pencarian:
+"algoritma genetika penjadwalan produksi Indonesia"
 
-**Pola yang terlihat — Metode dominan:** ___________________
-**Limitasi yang berulang:** ______________________________
+Database:
+Google Scholar
 
----
+| # | Study            | Tahun | Method       | Dataset    | Result           | Limitasi          |
+|---|------------------|-------|-------------|-----------|------------------|-------------------|
+| 1 | Hatim & Ahmad    | 2022  | GA + SPT     | Industri  | Makespan turun   | Hanya makespan    |
+| 2 | Praniasty et al. | 2024  | GA          | Produksi  | Lebih optimal    | Tidak ada energi  |
+| 3 | Hafiz et al.     | 2023  | GA          | Mesin     | Optimasi waktu   | Single-objective  |
+| 4 | Lestari et al.   | 2023  | GA          | Kuliah    | Minim konflik    | Sederhana         |
+| 5 | Siregar et al.   | 2024  | GA + NN     | Simulasi  | Lebih efisien    | Kompleks          |
 
-## Latihan 2 — Gap Identification
+Pola yang terlihat — Metode dominan:
+Genetic Algorithm (GA)
 
-Berdasarkan tabel di Latihan 1, identifikasi gap.
+Limitasi yang berulang:
+Fokus pada makespan, tidak mempertimbangkan energi dan availability, serta asumsi sistem ideal
 
-| Jenis Gap | Ditemukan? | Gap Statement |
-|-----------|-----------|---------------|
-| Performance Gap | [ ] Ya / [ ] Tidak | *Contoh: Akurasi turun di bawah 80% untuk kelas minoritas* |
-| Method Gap | [ ] Ya / [ ] Tidak | |
-| Data Gap | [ ] Ya / [ ] Tidak | |
-| Context Gap | [ ] Ya / [ ] Tidak | |
 
-**Gap utama yang dipilih:** _____________________________
-**Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
-> ___________________________________________________
+Latihan 2 — Gap Identification
 
----
+| Jenis Gap        | Ditemukan? | Gap Statement |
+|------------------|-----------|---------------|
+| Performance Gap  | [✓] Ya    | Optimasi hanya pada makespan tanpa mempertimbangkan efisiensi energi |
+| Method Gap       | [✓] Ya    | Belum banyak pendekatan multi-objective sederhana |
+| Data Gap         | [ ] Tidak | |
+| Context Gap      | [✓] Ya    | Model tidak mencerminkan kondisi nyata (mesin selalu stabil) |
 
-## Latihan 3 — Baseline Selection
+Gap utama yang dipilih:
+Multi-objective scheduling (makespan + energi + availability)
 
-Pilih 2 baseline dari literatur yang sudah dibaca.
+Mengapa gap ini penting:
+Karena dalam sistem produksi nyata, efisiensi tidak hanya ditentukan oleh waktu penyelesaian tetapi juga oleh konsumsi energi dan keandalan mesin. Pendekatan yang hanya fokus pada makespan tidak cukup untuk menghasilkan solusi yang optimal secara praktis dan aplikatif di industri.
 
-| # | Baseline | Mengapa Relevan | Mengapa Representatif | Apakah SOTA? | Sumber |
-|---|----------|----------------|----------------------|-------------|--------|
-| 1 | *Contoh: RF + TF-IDF* | *Task sama: klasifikasi teks* | *Dipakai 6 dari 10 paper* | *Bukan, tapi common practice* | *Lee et al., 2022* |
-| 2 | | | | | |
 
-**Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [ ] Tidak
-> Justifikasi: ________________________________________
+Latihan 3 — Baseline Selection
 
----
+| # | Baseline                 | Mengapa Relevan                         | Mengapa Representatif              | Apakah SOTA? | Sumber                 |
+|---|--------------------------|----------------------------------------|------------------------------------|-------------|------------------------|
+| 1 | GA + SPT + EFT          | Sama dengan kasus penjadwalan produksi | Digunakan dalam studi industri     | Tidak       | Hatim & Ahmad, 2022    |
+| 2 | Genetic Algorithm       | Digunakan di hampir semua penelitian   | Common practice dalam scheduling   | Tidak       | Hafiz et al., 2023     |
 
-## Refleksi
+Apakah pemilihan baseline ini bisa dianggap straw man? [ ] Tidak
 
-> Apa perbedaan antara "belum ada yang meneliti ini" (klaim tanpa bukti) dengan research gap yang valid? Bagaimana cara membuktikan bahwa sebuah gap benar-benar ada?
+Justifikasi:
+Baseline yang digunakan merupakan metode yang relevan dan umum digunakan dalam penelitian sebelumnya sehingga perbandingan tetap adil dan tidak bias.
 
-**Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+
+Refleksi
+
+Jawaban:
+Perbedaan antara klaim “belum ada yang meneliti ini” dengan research gap yang valid terletak pada adanya bukti ilmiah. Research gap yang valid harus didasarkan pada hasil analisis beberapa penelitian sebelumnya yang menunjukkan adanya keterbatasan atau kekurangan yang konsisten.
+
+Cara membuktikan gap adalah dengan melakukan pencarian literatur secara sistematis, kemudian mengidentifikasi pola limitasi yang berulang, seperti metode yang hanya fokus pada satu variabel atau asumsi yang tidak realistis. Dengan demikian, gap yang diambil memiliki dasar yang kuat dan relevan untuk dikembangkan dalam penelitian selanjutnya.

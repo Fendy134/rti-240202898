@@ -51,6 +51,7 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 | Scope | Selesaikan semua yang perlu | Batasi agar bisa dibuktikan |
 | Output | Working system | Evidence, paper, replicable findings |
 
+
 ### Istilah Penting
 
 - **Problem Statement** — Formulasi tertulis: konteks sistem + gap + dampak + justifikasi
