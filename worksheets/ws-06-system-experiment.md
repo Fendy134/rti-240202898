@@ -67,25 +67,29 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: ____________________
+Research Question: Apakah GA multi-objective menghasilkan solusi penjadwalan lebih optimal (makespan, energi, availability) dibanding GA single-objective dan metode manual pada kasus penjadwalan 30 produk di PT. Nuansa Indah?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-|          | IV   |                 |                           |
-|          | DV   |                 |                           |
-|          | CV   |                 |                           |
+| Metode penjadwalan | IV | Modul algoritma (GA multi-obj, GA single-obj, Manual FCFS) | Ganti config `scheduling_method` dan parameter objectives |
+| Makespan | DV | Modul metrics collector & logger | Otomatis mencatat timestamp start/end setiap job |
+| Konsumsi energi | DV | Modul energy tracker | Otomatis mengakumulasi energi per mesin per unit waktu |
+| Availability mesin | DV | Modul availability monitor | Otomatis menghitung (uptime / total_time) × 100 |
+| Jumlah produk | CV | Config file (`num_jobs: 30`) | Dikunci pada 30 produk untuk semua eksperimen |
+| Jumlah mesin | CV | Config file (`num_machines: 5`) | Dikunci pada 5 mesin untuk semua eksperimen |
+| Parameter GA | CV | Config file (population_size, generations, mutation_rate, crossover_rate) | Dikunci dengan nilai yang sama untuk semua metode GA |
 
 4 Prinsip Desain:
-  [ ] Traceability — Setiap komponen bisa ditelusuri ke variabel
-  [ ] Variable Isolation — IV bisa diubah tanpa mengubah CV
-  [ ] Measurement Integration — Pengukuran DV built-in
-  [ ] Reproducibility — Setup bisa direkonstruksi
+  [X] Traceability — Setiap komponen bisa ditelusuri ke variabel
+  [X] Variable Isolation — IV bisa diubah tanpa mengubah CV
+  [X] Measurement Integration — Pengukuran DV built-in di modul logger
+  [X] Reproducibility — Setup bisa direkonstruksi dari config file
 
 Experimental Setup:
-  Input data     : ____________________
-  Parameter      : ____________________
-  Output format  : ____________________
+  Input data     : Data historis PT. Nuansa Indah (30 produk, 5 mesin, waktu standar per produk per mesin, daya mesin)
+  Parameter      : scheduling_method (GA-multi, GA-single, Manual), population_size (100), generations (500), mutation_rate (0.1), crossover_rate (0.8), num_jobs (30), num_machines (5)
+  Output format  : JSON dengan fields: method, makespan_minutes, energy_kwh, availability_percent, execution_time_seconds, timestamp
 ```
 
 ---
