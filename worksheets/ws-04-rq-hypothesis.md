@@ -111,7 +111,7 @@ Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 **Evaluasi RQ:**
 
 | Komponen | Ada? | Isi |
-|----------|------|-----|
+|:---------|:----:|:---|
 | Metode spesifik | Ya | Algoritma Genetika dengan multi-objective optimization |
 | Metrik terukur | Ya | Makespan (menit), Konsumsi energi (kWh), Availability (%) |
 | Baseline | Tidak | Perlu ditambahkan: GA single-objective atau metode konvensional |
@@ -129,7 +129,7 @@ Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
-|----------|-----|
+|:---------|:---|
 | H₀ | Tidak ada perbedaan signifikan dalam performa penjadwalan (makespan, energi, availability) antara GA multi-objective, GA single-objective, dan metode manual pada kasus penjadwalan 30 produk di PT. Nuansa Indah |
 | H₁ | GA multi-objective menghasilkan performa penjadwalan yang signifikan lebih baik (makespan lebih rendah, energi lebih efisien, availability lebih tinggi) dibandingkan GA single-objective dan metode manual |
 | Metrik | Makespan (menit), Konsumsi energi (kWh), Availability (%) |
@@ -146,7 +146,7 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 Lengkapi rantai dari RQ hingga metode analisis.
 
 | Tahap | Isi |
-|-------|-----|
+|:------|:---|
 | RQ | Apakah GA multi-objective menghasilkan solusi penjadwalan lebih optimal (makespan, energi, availability) dibanding GA single-objective dan metode manual? |
 | Variable (IV) | Jenis metode penjadwalan: (1) GA multi-objective, (2) GA single-objective, (3) Metode manual FCFS |
 | Variable (DV) | Performa penjadwalan: makespan, konsumsi energi, availability mesin |

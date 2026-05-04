@@ -46,7 +46,7 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ### Research vs Engineering
 
 | Aspek | Engineering | Research |
-|-------|------------|----------|
+|:------|:-----------|:---------|
 | Tujuan sistem | Memenuhi kebutuhan user | Menguji hipotesis, menghasilkan bukti |
 | Arsitektur | Optimasi performa & skalabilitas | Optimasi isolasi variabel & reprodusibilitas |
 | Konfigurasi | Sering hardcoded | Dieksternalisasi ke config file |
@@ -71,7 +71,7 @@ Research Question: Apakah GA multi-objective menghasilkan solusi penjadwalan leb
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
-|----------|------|-----------------|---------------------------|
+|:---------|:----:|:-----------------|:--------------------------|
 | Metode penjadwalan | IV | Modul algoritma (GA multi-obj, GA single-obj, Manual FCFS) | Ganti config `scheduling_method` dan parameter objectives |
 | Makespan | DV | Modul metrics collector & logger | Otomatis mencatat timestamp start/end setiap job |
 | Konsumsi energi | DV | Modul energy tracker | Otomatis mengakumulasi energi per mesin per unit waktu |
@@ -101,7 +101,7 @@ Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 **RQ:** __________________________________________________
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
-|----------|------|-----------------|---------------------------|
+|:---------|:----:|:-----------------|:--------------------------|
 | *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
 | | DV | | |
 | | CV | | |
@@ -116,7 +116,7 @@ Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
-|---------|--------|-------------------|
+|:--------|:------:|:------------------|
 | Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
 | Modularity | | |
 | Controllability | | |
@@ -133,7 +133,7 @@ Evaluasi desain sistem terhadap 4 prinsip.
 Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
-|---------|-----------|-----------|-----------|----------------------|
+|:--------|:---------:|:---------:|:---------:|:---------------------|
 | Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
 | – A | ❌ (ganti RF) | ✅ | ✅ | |
 | – B | ✅ | ❌ (tanpa temporal) | ✅ | |

@@ -47,7 +47,7 @@ Metrik harus ditentukan **sebelum** eksperimen. Memilih metrik setelah melihat d
 ### Research vs Engineering
 
 | Aspek | Engineering | Research |
-|-------|------------|----------|
+|:------|:-----------|:---------|
 | Pemilihan metrik | Berdasarkan kebiasaan/tool yang ada | Berdasarkan construct validity |
 | Anomali | Dihapus untuk laporan bersih | Diinvestigasi — bisa jadi temuan |
 | Kapan dipilih | Setelah sistem jadi (monitoring) | Sebelum eksperimen (by design) |
@@ -69,7 +69,7 @@ VARIABLE & METRIC DEFINITION
 Research Question: Apakah GA multi-objective menghasilkan solusi penjadwalan lebih optimal (makespan, energi, availability) dibanding GA single-objective dan metode manual pada kasus penjadwalan 30 produk di PT. Nuansa Indah?
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
-|----------|------|--------|--------|-------|--------|---------------|-------------|
+|:---------|:----:|:--------|:--------|:-----:|:------:|:--------------|:-----------|
 | Metode penjadwalan | IV | Pendekatan optimasi yang digunakan | Kategori: GA multi-obj, GA single-obj, Manual FCFS | Nominal | — | Konfigurasi parameter algoritma di config file | Variabel independen yang dimanipulasi untuk membandingkan performa |
 | Makespan | DV | Total waktu penyelesaian semua produk | Durasi dari job pertama hingga job terakhir selesai | Ratio | Menit | Logger otomatis mencatat timestamp start/end setiap job | Primary metric yang langsung terikat hipotesis; representatif untuk efisiensi waktu |
 | Konsumsi energi | DV | Efisiensi penggunaan daya mesin | Total energi yang dikonsumsi selama proses produksi | Ratio | kWh | Energy tracker mengakumulasi daya per mesin per unit waktu | Primary metric untuk mengukur efisiensi energi; feasible dari simulasi |
@@ -94,7 +94,7 @@ Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 **RQ:** Apakah GA multi-objective menghasilkan solusi penjadwalan lebih optimal (makespan, energi, availability) dibanding GA single-objective dan metode manual?
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
-|----------|------|---------------|----------------|-------------|--------|
+|:---------|:----:|:---------------|:---------------|:------------:|:------:|
 | Metode penjadwalan | IV | Pendekatan optimasi yang digunakan | Kategori: GA multi-obj, GA single-obj, Manual FCFS | Nominal | — |
 | Makespan | DV | Total waktu penyelesaian semua produk | Durasi dari job pertama hingga job terakhir selesai | Ratio | Menit |
 | Konsumsi energi | DV | Efisiensi penggunaan daya mesin | Total energi yang dikonsumsi selama proses produksi | Ratio | kWh |
@@ -112,7 +112,7 @@ Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
-|----------|-----------|-------------|
+|:---------|:---------:|:-----------|
 | Representative | 5 | Makespan, energi, dan availability secara langsung mewakili efisiensi penjadwalan yang diinginkan dalam industri manufaktur |
 | Sensitive | 4 | Ketiga metrik cukup peka menangkap perbedaan performa antar metode. Makespan sangat sensitif terhadap urutan job; energi sensitif terhadap idle time mesin; availability sensitif terhadap downtime |
 | Feasible | 5 | Semua metrik dapat dikumpulkan dari simulasi atau data historis perusahaan tanpa biaya tambahan yang signifikan |
@@ -130,7 +130,7 @@ Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualitas data.
 
 | Dimensi | Pertanyaan | Jawaban | Strategi Mitigasi |
-|---------|-----------|---------|------------------|
+|:--------|:-----------|:--------|:-----------------|
 | Completeness | Apakah semua data point terkumpul? | Sebagian besar data akan terkumpul dari simulasi, namun ada risiko data historis perusahaan tidak lengkap untuk semua 30 produk | Melakukan data cleaning dan imputation untuk missing values; menggunakan data sintetis yang realistis untuk melengkapi gap |
 | Consistency | Apakah ada kontradiksi internal? | Ada potensi inkonsistensi antara waktu standar mesin vs waktu aktual; satuan energi mungkin berbeda antar mesin | Melakukan normalisasi data; mendokumentasikan asumsi konversi satuan; melakukan validasi silang dengan tim produksi |
 | Validity | Apakah benar-benar mengukur yang dimaksud? | Makespan valid mengukur durasi; energi valid jika menggunakan meter yang terkalibrasi; availability valid jika mencatat downtime dengan akurat | Melakukan pre-test dengan data sampel; melakukan audit terhadap sumber data; melibatkan domain expert untuk validasi |
