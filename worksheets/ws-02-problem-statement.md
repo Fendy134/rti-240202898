@@ -70,50 +70,50 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 ##  Problem Statement Builder
 
 **Domain & Konteks**
-- **Domain:** Manajemen Operasi & Sistem Informasi Manufaktur.
-- **Konteks:** Optimasi penjadwalan produksi pada industri furnitur dengan varian produk tinggi.
+- **Domain:** Software Engineering & Data Structure Performance Analysis pada platform Java.
+- **Konteks:** Pemilihan struktur data koleksi (`java.util.Collection`) yang tepat untuk manajemen data objek dalam aplikasi Java enterprise modern.
 
 **System Context**
-- **Input:** Daftar 30 jenis produk, estimasi waktu pengerjaan per produk, dan jumlah mesin tersedia.
-- **Process:** Penentuan urutan pengerjaan menggunakan mekanisme seleksi, *crossover*, dan mutasi (Algoritma Genetika).
-- **Output:** Urutan jadwal produksi baru (Gantt Chart).
-- **Outcome:** Reduksi total waktu penyelesaian produksi (*makespan*).
-- **Constraints:** Kapasitas mesin tetap, ketergantungan urutan produk, dan parameter algoritma (populasi/generasi).
-- **Stakeholders:** Manajer Produksi, Operator Mesin, dan Pemilik PT. Nuansa Indah.
+- **Input:** Dataset POJO `Person` (id, name, age, email) dengan ukuran bervariasi (10³, 10⁴, 10⁵, 10⁶ elemen).
+- **Process:** Eksekusi 5 operasi CRUD dasar (insert, search, update, delete, iterate) menggunakan dua struktur data: `ArrayList<Person>` dan `HashMap<Integer, Person>`.
+- **Output:** Pengukuran kuantitatif execution time (ns/op), memory footprint (bytes), dan throughput (ops/sec) untuk setiap kombinasi.
+- **Outcome:** Panduan empiris berbasis data untuk developer Java dalam memilih struktur data yang sesuai dengan use case operasi dominan dan ukuran data.
+- **Constraints:** Lingkungan single-threaded, JVM Java 17 dengan G1GC, hardware tetap, dataset acak dengan seed yang sama untuk reproducibility.
+- **Stakeholders:** Java developer (terutama backend engineer), software architect yang mendesain data layer, dan technical lead yang membuat keputusan teknologi.
 
 **Fenomena → Problem**
-- **Fenomena yang diamati:** Terjadi keterlambatan penyelesaian pesanan dan mesin sering menganggur (*idle*).
-- **Gejala (symptom) yang terukur:** Total waktu penyelesaian (*makespan*) mencapai 3.910 menit dengan metode manual.
-- **Masalah yang didiagnosis:** Metode *First-Come First-Served* (FCFS) manual tidak mampu menangani kombinasi urutan produk yang kompleks secara efisien.
-- **Masalah riset (researchable):** Sejauh mana implementasi Algoritma Genetika dapat meminimalkan *makespan* dibandingkan metode konvensional pada kasus penjadwalan 30 produk?
-- **Variabel yang terukur:** Nilai *Fitness*, Durasi *Makespan* (Menit), dan Persentase Peningkatan Efisiensi (%).
+- **Fenomena yang diamati:** Developer Java sering memilih struktur data koleksi berdasarkan intuisi atau kebiasaan ("pakai ArrayList saja, lebih familiar") tanpa data empiris yang membandingkan performa pada berbagai operasi dan ukuran data.
+- **Gejala (symptom) yang terukur:** Banyak aplikasi Java mengalami performance bottleneck pada operasi data layer yang seharusnya bisa dihindari dengan pemilihan struktur data yang lebih sesuai (misalnya O(n) linear search di ArrayList ketika HashMap lookup O(1) tersedia).
+- **Masalah yang didiagnosis:** Belum ada studi pembanding **ArrayList vs HashMap** yang menggunakan metodologi benchmark standar (JMH) pada Java 17+ dengan uji statistik. Studi existing (seperti Pujiono dkk 2024 untuk algoritma sorting) menggunakan `System.currentTimeMillis()` single-run tanpa kontrol JIT/GC, sehingga hasilnya tidak reliable.
+- **Masalah riset (researchable):** Bagaimana perbedaan performa kuantitatif (execution time, memory footprint, throughput) antara `ArrayList<Person>` dan `HashMap<Integer, Person>` pada 5 operasi CRUD dasar untuk 4 ukuran dataset (10³–10⁶) di Java 17, diukur dengan JMH dan diuji signifikansinya secara statistik?
+- **Variabel yang terukur:** Execution time (ns/op), memory footprint (bytes via JOL), throughput (ops/sec), dengan IV: jenis struktur data, jenis operasi, dan ukuran dataset.
 
 **Problem Quality Check**
-- [X] **Clarity** — Masalah spesifik pada inefisiensi jadwal.
-- [X] **Measurability** — Menggunakan metrik waktu (menit) yang absolut.
-- [X] **Relevance** — Berkontribusi pada efisiensi operasional industri.
-- [X] **Testability** — Dapat dibandingkan langsung antara hasil manual vs algoritma.
-- [X] **Impact** — Mempercepat waktu produksi dan mengurangi biaya operasional.
+- [X] **Clarity** — Masalah spesifik: perbandingan dua struktur data konkret pada operasi tertentu.
+- [X] **Measurability** — Tiga metrik kuantitatif dengan satuan jelas (ns/op, bytes, ops/sec).
+- [X] **Relevance** — ArrayList dan HashMap adalah dua struktur data paling banyak dipakai di ekosistem Java.
+- [X] **Testability** — Hipotesis bisa difalsifikasi (misal: "HashMap lebih cepat di search" bisa salah jika data menunjukkan sebaliknya pada ukuran tertentu).
+- [X] **Impact** — Memberikan panduan empiris yang dapat dipakai langsung oleh developer dalam decision making.
 
 **Problem Statement (1 Paragraf):**
-PT. Nuansa Indah menghadapi kendala inefisiensi produksi di mana metode penjadwalan manual mengakibatkan *makespan* yang tinggi sebesar 3.910 menit. Hal ini disebabkan oleh ketidakmampuan metode konvensional dalam mengoptimalkan urutan pengerjaan 30 jenis produk pada sumber daya yang terbatas. Penelitian ini bertujuan untuk menguji efektivitas Algoritma Genetika dalam mereduksi waktu produksi melalui pencarian solusi urutan global yang optimal, guna menghasilkan sistem penjadwalan yang lebih presisi dan efisien.
+Developer Java sering memilih struktur data koleksi berdasarkan intuisi tanpa panduan empiris yang valid, padahal pemilihan yang salah dapat menyebabkan performance bottleneck yang signifikan pada aplikasi production. Studi existing yang membandingkan performa di Java (seperti Pujiono dkk 2024 untuk algoritma sorting) menggunakan metodologi benchmark yang lemah — `System.currentTimeMillis()` dengan single-run tanpa warmup, tanpa kontrol terhadap JIT compiler dan GC, dan tanpa uji statistik. Akibatnya, hasil tidak reproducible dan tidak bisa dijadikan dasar pengambilan keputusan teknis. Penelitian ini bertujuan menghasilkan analisis perbandingan performa **ArrayList vs HashMap** pada 5 operasi CRUD dasar (insert, search, update, delete, iterate) untuk 4 ukuran dataset (10³, 10⁴, 10⁵, 10⁶) menggunakan **Java Microbenchmark Harness (JMH)** sebagai instrumen standar, dengan uji signifikansi statistik (ANOVA + Tukey HSD), pada Java 17 LTS.
 
 ---
 
 ##  Latihan 1 — Dari Topik ke Masalah Riset
 
-**Topik awal:** Optimasi Penjadwalan Produksi Industri.
+**Topik awal:** Performa Struktur Data di Java.
 
 | Tahap | Hasil |
 |-------|-------|
-| **Reality** | Pabrik sering mengalami lembur akibat jadwal produksi yang tidak teratur. |
-| **Observed Issue (Symptom)** | *Makespan* produksi mencapai 3.910 menit dan terjadi penumpukan barang. |
-| **Diagnosed Problem (Root Cause)** | Penggunaan metode urutan manual (FCFS) yang tidak mempertimbangkan variansi waktu pengerjaan antar produk. |
-| **Researchable Problem** | Analisis perbandingan performa antara metode manual dan Algoritma Genetika dalam minimasi *makespan*. |
-| **Measurable Variable** | Total durasi waktu produksi (*makespan*) dalam satuan menit. |
+| **Reality** | Aplikasi Java enterprise mengalami latency tinggi pada operasi data lookup yang frekuensinya tinggi. |
+| **Observed Issue (Symptom)** | Profiling menunjukkan operasi `list.contains(x)` di `ArrayList` menjadi hotspot pada list dengan >10⁴ elemen. |
+| **Diagnosed Problem (Root Cause)** | Developer memilih `ArrayList` sebagai default karena familiar, tanpa mempertimbangkan kompleksitas operasi: `contains()` di `ArrayList` adalah O(n), sementara `HashMap.containsKey()` adalah O(1) average case. |
+| **Researchable Problem** | Belum ada studi yang membandingkan performa `ArrayList` vs `HashMap` untuk 5 operasi CRUD dasar dengan metodologi benchmark standar (JMH) dan uji statistik pada Java 17. |
+| **Measurable Variable** | Execution time (ns/op), memory footprint (bytes), throughput (ops/sec). |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [X] Tidak  
-> **Justifikasi:** Analisis dimulai dari masalah nyata (keterlambatan produksi), bukan sekadar ingin menggunakan algoritma tanpa urgensi masalah.
+> **Justifikasi:** Riset dimulai dari fenomena nyata (latency tinggi, profiling hotspot) dan gap metodologi pada studi existing, bukan dari keinginan menggunakan tool tertentu. JMH dipilih bukan karena ingin pakai JMH, tapi karena tool ini menjawab kelemahan metodologi pada studi sebelumnya.
 
 ---
 
@@ -121,14 +121,14 @@ PT. Nuansa Indah menghadapi kendala inefisiensi produksi di mana metode penjadwa
 
 | Komponen | Deskripsi |
 |----------|----------|
-| **Input** | Data 30 item produk dan matriks waktu pengerjaan masing-masing mesin. |
-| **Process** | Pencarian kombinasi urutan terbaik melalui iterasi evolusi Algoritma Genetika. |
-| **Output** | Urutan pengerjaan (*job sequence*) yang memiliki total waktu terkecil. |
-| **Outcome** | Efisiensi waktu produksi sebesar 20,23% (dari 3.910 ke 3.119 menit). |
-| **Constraints** | Jumlah mesin yang statis dan parameter probabilitas mutasi/crossover. |
-| **Stakeholders** | Tim produksi yang membutuhkan kepastian jadwal pengerjaan. |
+| **Input** | Dataset POJO `Person` (id: int, name: String, age: int, email: String) dengan 4 ukuran: 10³, 10⁴, 10⁵, 10⁶ elemen, di-generate dengan `Random` ber-seed tetap untuk reproducibility. |
+| **Process** | Eksekusi 5 operasi CRUD (insert, search, update, delete, iterate) pada `ArrayList<Person>` dan `HashMap<Integer, Person>` melalui JMH benchmark methods (`@Benchmark`). |
+| **Output** | File CSV dan JSON berisi raw measurement: execution time per operasi (ns/op), memory footprint (bytes), throughput (ops/sec), dengan confidence interval 99%. |
+| **Outcome** | Panduan empiris (decision matrix) untuk developer: "jika operasi dominan = search dan ukuran data > 10⁴, gunakan HashMap karena X% lebih cepat dengan signifikansi p < 0.05". |
+| **Constraints** | Single-threaded, Java 17 LTS, G1GC, heap 4GB fixed (`-Xms4g -Xmx4g`), 5 warmup × 1s + 10 measurement × 1s, 3 forks per benchmark. |
+| **Stakeholders** | Java backend developer, software architect, technical lead — siapapun yang membuat keputusan struktur data di kode Java. |
 
-**Komponen mana yang paling relevan dengan masalah riset?** **Process** (Karena efektivitas pencarian urutan sangat bergantung pada algoritma yang digunakan).
+**Komponen mana yang paling relevan dengan masalah riset?** **Process** — karena variabel independen (jenis struktur data dan operasi) dan dependen (waktu, memori) keduanya berada di tahap eksekusi. Process inilah yang dimanipulasi dan diukur.
 
 ---
 
@@ -136,18 +136,21 @@ PT. Nuansa Indah menghadapi kendala inefisiensi produksi di mana metode penjadwa
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| **Clarity** | 5 | Fokus pada satu masalah: optimasi durasi waktu penjadwalan. |
-| **Measurability** | 5 | Hasil diukur dengan perbandingan waktu menit yang sangat kontras. |
-| **Relevance** | 4 | Sangat berguna untuk industri manufaktur serupa. |
-| **Testability** | 5 | Hipotesis bahwa AG lebih baik dari manual sangat mudah diuji melalui simulasi. |
-| **Impact** | 4 | Memberikan efisiensi nyata pada manajemen waktu perusahaan. |
+| **Clarity** | 5 | Fokus pada perbandingan dua struktur data konkret (ArrayList vs HashMap) untuk 5 operasi spesifik pada 4 ukuran data tertentu. |
+| **Measurability** | 5 | Tiga metrik kuantitatif dengan satuan SI yang jelas: ns/op, bytes, ops/sec. Diukur dengan instrumen standar (JMH + JOL). |
+| **Relevance** | 5 | ArrayList dan HashMap adalah dua dari struktur data paling banyak dipakai dalam ekosistem Java (lihat statistik penggunaan `java.util` di GitHub). |
+| **Testability** | 5 | Setiap hipotesis (misal H1: HashMap lebih cepat di search) bisa difalsifikasi dengan data benchmark + uji ANOVA. |
+| **Impact** | 4 | Memberikan panduan empiris yang langsung dapat dipakai developer. Skor 4 (bukan 5) karena terbatas pada single-threaded — concurrent scenario perlu studi lanjutan. |
 
-**Skor total:** **23 / 25**
+**Skor total:** **24 / 25**
 
-**Problem statement versi final (1 paragraf):** Inefisiensi penjadwalan manual di PT. Nuansa Indah menyebabkan durasi produksi yang tidak optimal, mencapai 3.910 menit untuk satu siklus pengerjaan. Masalah ini berakar pada penggunaan metode urutan sederhana yang tidak mampu mengelola kompleksitas 30 varian produk secara efisien. Melalui pendekatan *Design Science*, riset ini mengimplementasikan Algoritma Genetika untuk menemukan urutan produksi optimal yang dapat meminimalkan waktu *idle* mesin, dengan target peningkatan efisiensi yang terukur secara kuantitatif melalui durasi *makespan*.
+**Problem statement versi final (1 paragraf):**
+Pemilihan struktur data koleksi di Java sering didasarkan pada intuisi tanpa panduan empiris yang valid, sementara studi pembanding existing menggunakan metodologi benchmark yang lemah (`System.currentTimeMillis()`, single-run, tanpa kontrol JIT/GC, tanpa uji statistik) sehingga hasilnya tidak reproducible. Penelitian ini melakukan analisis komparatif performa **`ArrayList<Person>`** dan **`HashMap<Integer, Person>`** pada 5 operasi CRUD dasar (insert, search, update, delete, iterate) dengan 4 ukuran dataset (10³, 10⁴, 10⁵, 10⁶) menggunakan **Java Microbenchmark Harness (JMH)** sebagai instrumen pengukuran standar, **JOL (Java Object Layout)** untuk memory footprint, dan **ANOVA + Tukey HSD post-hoc** untuk uji signifikansi pada Java 17 LTS. Kontribusi utama adalah panduan empiris (decision matrix) berbasis bukti statistik untuk decision making developer.
 
 ---
 
 ##  Refleksi
 
-**Jawaban:** Perbedaan fundamentalnya terletak pada **sifat solusinya**. Masalah coding (bug/error) bersifat reaktif dan tujuannya adalah perbaikan teknis agar sistem kembali berfungsi (*corrective*). Sedangkan masalah riset bersifat proaktif dan bertujuan untuk membuktikan sebuah klaim atau mencari pengetahuan baru (*explorative*). Dalam riset, "masalah" bukan sekadar error, melainkan sebuah tantangan untuk membuktikan bahwa ada cara yang lebih baik, lebih cepat, atau lebih efisien berdasarkan data yang dapat direplikasi oleh orang lain.
+**Pertanyaan:** Apa perbedaan antara masalah dalam coding sehari-hari (bug, error) dengan masalah riset?
+
+**Jawaban:** Perbedaan paling fundamental terletak pada **tujuan dan output**. Masalah coding bersifat **reaktif dan corrective** — ada bug yang menghambat sistem, target adalah menghilangkan bug agar sistem berfungsi. Masalah riset bersifat **eksploratif dan generative** — ada gap dalam pengetahuan, target adalah menghasilkan bukti empiris yang dapat divalidasi oleh komunitas. Dalam konteks riset ini, jika developer mengeluh "aplikasi saya lambat di operasi search", itu adalah masalah engineering yang diselesaikan dengan profiling dan refactoring spesifik. Tetapi pertanyaan "apakah HashMap secara signifikan lebih cepat dari ArrayList untuk search di Java 17?" adalah masalah riset, karena membutuhkan eksperimen terkontrol, pengukuran berulang, uji statistik, dan dokumentasi yang reproducible. Output engineering adalah patch atau commit; output riset adalah temuan yang dapat di-cite, di-replikasi, dan di-bangun di atasnya oleh peneliti lain.
