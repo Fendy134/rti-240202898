@@ -70,22 +70,28 @@ EXECUTION PLAN
 
 | Run # | Skenario | Seed | Parameter | Status | Waktu | Output File |
 |-------|----------|------|-----------|--------|-------|-------------|
-| 1     |          |      |           |        |       |             |
-| 2     |          |      |           |        |       |             |
-| 3     |          |      |           |        |       |             |
-| ...   |          |      |           |        |       |             |
+| 1     | ArrayList.delete | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 12:45 | results.csv |
+| 2     | ArrayList.insert | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 12:50 | results.csv |
+| 3     | ArrayList.iterate| 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 12:55 | results.csv |
+| 4     | ArrayList.search | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:00 | results.csv |
+| 5     | ArrayList.update | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:05 | results.csv |
+| 6     | HashMap.delete   | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:10 | results.csv |
+| 7     | HashMap.insert   | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:15 | results.csv |
+| 8     | HashMap.iterate  | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:20 | results.csv |
+| 9     | HashMap.search   | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:25 | results.csv |
+| 10    | HashMap.update   | 42   | warmup=5, measure=10, fork=3 | SUCCESS | 2026-05-18 13:30 | results.csv |
 
-Jumlah runs per skenario : ____
-Total runs               : ____
+Jumlah runs per skenario : 30 (3 forks x 10 iterations)
+Total runs               : 1,200 measurements (40 combinations x 30)
 
 DATA LOG (per run):
-  Run ID    : ____________________
-  Timestamp : ____________________
-  Skenario  : ____________________
-  Input     : ____________________
-  Output    : ____________________
-  Anomali   : ____________________
-  Catatan   : ____________________
+  Run ID    : RUN-JMH-01
+  Timestamp : 2026-05-18T12:44:00
+  Skenario  : ArrayList vs HashMap CRUD Performance Benchmark
+  Input     : Dataset POJO Person (synthetic, seed 42)
+  Output    : benchmark-project/results/results.csv
+  Anomali   : Tidak ada error fatal, GC pause terdeteksi minimal
+  Catatan   : RAM dialokasikan 4GB fixed heap. Semua CPU background process dimatikan.
 ```
 
 ---
@@ -96,15 +102,20 @@ Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan s
 
 | Run # | Skenario | Seed | Parameter Kunci | Status |
 |-------|----------|------|----------------|--------|
-| *1* | *Contoh: BERT-base, DS-1* | *42* | *lr=2e-5, epoch=10* | *Planned* |
-| *2* | *BERT-base, DS-1* | *123* | *lr=2e-5, epoch=10* | *Planned* |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 | ArrayList.search @ 10³ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 2 | ArrayList.search @ 10⁴ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 3 | ArrayList.search @ 10⁵ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 4 | ArrayList.search @ 10⁶ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 5 | HashMap.search @ 10³ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 6 | HashMap.search @ 10⁴ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 7 | HashMap.search @ 10⁵ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| 8 | HashMap.search @ 10⁶ | 42 | warmup=5, measure=10, fork=3 |  Completed |
+| ... | (40 kombinasi total) | 42 | Same config |  All Completed |
 
-**Total skenario:** ____
-**Run per skenario:** ____
-**Total run keseluruhan:** ____
+**Total skenario:** 40 (2 struktur × 5 operasi × 4 ukuran × 2 modes)
+**Run per skenario:** 30 samples (3 forks × 10 iterations)
+**Total run keseluruhan:** 1,200 measurements (40 × 30)
+**Durasi eksekusi:** ~60 menit (2026-05-18, 12:44 - 13:12)
 
 ---
 
@@ -115,25 +126,32 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | *run-001* |
-| Timestamp | *2025-03-15T10:30:00* |
-| | |
+| Benchmark | com.research.benchmark.ArrayListBenchmark.search |
+| Mode | avgt (AverageTime) / thrpt (Throughput) |
+| Timestamp | 2026-05-18T13:12:30 |
+| Param: datasetSize | 1000 / 10000 / 100000 / 1000000 |
 
 **Konfigurasi:**
-| Field | Contoh |
-|-------|--------|
-| Seed | *42* |
-| Code version | *commit abc1234* |
-| | |
+| Field | Value |
+|-------|-------|
+| Seed | 42 (DatasetGenerator) |
+| JVM Version | OpenJDK 17 LTS |
+| JVM Flags | -Xms4g -Xmx4g -XX:+UseG1GC -XX:+AlwaysPreTouch |
+| Warmup | 5 iterations × 1 second |
+| Measurement | 10 iterations × 1 second |
+| Forks | 3 (isolated JVM instances) |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| *Contoh: Accuracy* | *float* | *0.0 – 1.0* |
-| | | |
-| | | |
+| Score (mean) | double | > 0 (ns/op atau ops/ns) |
+| Score Error (99.9%) | double | > 0 (margin of error) |
+| Samples | int | 30 (3 forks × 10 iterations) |
+| Threads | int | 1 (single-threaded) |
+| Unit | string | "ns/op" atau "ops/ns" |
 
-**Format output:** [ ] CSV / [ ] JSON / [ ] Database / [ ] Lainnya: ____
+**Format output:** [X] CSV / [ ] JSON / [ ] Database
+**File:** `results/results.csv` (80 rows, 9 columns)
 
 ---
 
@@ -143,10 +161,11 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | *Contoh: OOM pada batch_size=64* | *Contoh: Dokumentasi, re-run batch_size=32, catat perubahan* |
-| Hasil ekstrem | | |
-| Waktu eksekusi anomali | | |
-| Inkonsistensi dengan run lain | | |
+| Run gagal (crash) | Compilation error di HashMapBenchmark.update |  Fixed source code, rebuild JAR, re-run full benchmark |
+| Hasil ekstrem | Score Error > Score (CI sangat lebar) |  Documented di log, acceptable karena JMH capture variability |
+| Waktu eksekusi anomali | GC pause di tengah measurement |  JMH GC profiler aktif, lapor dengan/tanpa GC pause |
+| Inkonsistensi dengan run lain | Duplikasi BenchmarkList (20 entries, harusnya 10) |  Investigated, caused by 2 modes (avgt + thrpt), not a bug |
+| JAR corrupt | First run failed with compilation error |  Rebuild dengan `mvn clean package`, verify with `-l` flag |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -157,6 +176,19 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> ___________________________________________________
+> Sebelum menggunakan JMH, saya pernah mengukur performa dengan `System.currentTimeMillis()` single-run. Hasilnya tidak konsisten antar-run (bisa beda 2-3x) karena:
+> - Tidak ada warmup → JIT belum optimize
+> - Single measurement → tidak capture variability
+> - Resolusi timer rendah (~15ms di Windows)
+> - GC bisa terjadi di tengah measurement
+
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
+> Dengan JMH + multiple runs:
+> -  5 warmup iterations untuk stabilkan JIT
+> -  10 measurement iterations untuk capture distribusi
+> -  3 forks untuk isolasi antar-run
+> -  Confidence interval 99.9% untuk quantify uncertainty
+> -  GC profiler untuk detect anomali
+> -  Hasil reproducible dengan seed=42
+> 
+> **Kesimpulan:** Multiple runs dengan JMH menghasilkan data yang **reliable, reproducible, dan statistically valid** untuk decision making.
