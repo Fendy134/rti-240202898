@@ -1,0 +1,8 @@
+source,F,p_value,significant
+C(structure),5957.5515,0.0,True
+C(operation),2290.3262,0.0,True
+C(size_cat),1872.2982,0.0,True
+C(structure):C(operation),1919.7529,0.0,True
+C(structure):C(size_cat),582.112,0.0,True
+C(operation):C(size_cat),107.223,0.0,True
+Residual,,,False

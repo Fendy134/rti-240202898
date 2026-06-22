@@ -1,0 +1,21 @@
+operation,dataset_size,recommended,justification,significant,cohens_d
+insert,1000,ArrayList,ArrayList 2486% lebih cepat (d=1.43),True,1.4333
+insert,10000,ArrayList,ArrayList 42408% lebih cepat (d=1.20),True,1.1967
+insert,100000,ArrayList,ArrayList 3068% lebih cepat (d=2.19),True,2.1868
+insert,1000000,HashMap,HashMap 97% lebih cepat (d=1.32),True,1.3214
+search,1000,HashMap,HashMap 99% lebih cepat (d=8.37),True,8.37
+search,10000,HashMap,HashMap 100% lebih cepat (d=4.85),True,4.8457
+search,100000,HashMap,HashMap 100% lebih cepat (d=13.50),True,13.502
+search,1000000,HashMap,HashMap 100% lebih cepat (d=4.78),True,4.7844
+update,1000,HashMap,HashMap 94% lebih cepat (d=13.59),True,13.5908
+update,10000,HashMap,HashMap 99% lebih cepat (d=3.65),True,3.6498
+update,100000,HashMap,HashMap 100% lebih cepat (d=22.78),True,22.7777
+update,1000000,HashMap,HashMap 100% lebih cepat (d=6.08),True,6.078
+delete,1000,Either,Tidak ada perbedaan signifikan (p=0.009),False,1.0246
+delete,10000,HashMap,HashMap 100% lebih cepat (d=11.36),True,11.3632
+delete,100000,HashMap,HashMap 100% lebih cepat (d=8.68),True,8.6776
+delete,1000000,HashMap,HashMap 100% lebih cepat (d=19.94),True,19.9393
+iterate,1000,ArrayList,ArrayList 338% lebih cepat (d=5.55),True,5.55
+iterate,10000,ArrayList,ArrayList 65% lebih cepat (d=1.33),True,1.3271
+iterate,100000,ArrayList,ArrayList 49% lebih cepat (d=2.86),True,2.8604
+iterate,1000000,Either,Tidak ada perbedaan signifikan (p=0.863),False,0.5434

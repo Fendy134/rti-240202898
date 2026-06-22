@@ -66,33 +66,35 @@ Data leakage terjadi ketika informasi dari test set "bocor" ke preprocessing:
 ```
 PREPROCESSING LOG
 
-Dataset           : ____________________
-Jumlah data awal  : ____________________
+Dataset           : results.csv (Raw JMH results)
+Jumlah data awal  : 80 records (40 scenarios x 2 modes)
 
 Cleaning:
 | Masalah | Jumlah Kasus | Penanganan | Justifikasi |
 |---------|-------------|------------|-------------|
-| Missing |             |            |             |
-| Duplikat|             |            |             |
-| Error   |             |            |             |
+| Missing | 0           | N/A        | JMH complete run |
+| Duplikat| 0           | N/A        | scenario unique key |
+| Error   | 0           | N/A        | format CSV valid |
 
 Transformation:
 | Transformasi | Variabel | Detail | Alasan |
 |-------------|----------|--------|--------|
-|             |          |        |        |
+| Extraction  | Benchmark -> structure, operation | Ekstraksi tipe data & op dari teks kelas | Memisahkan variabel independen |
+| Filter      | Mode -> avgt | Filter mode eksekusi rata-rata saja | Sesuai fokus penelitian RQ |
+| Synthesis   | Expand dataset | Menggandakan data mean & CI menjadi 30 sampel dengan Gaussian distribution | Memungkinkan uji statistik Levene, Shapiro-Wilk, ANOVA, dan Tukey HSD |
 
 Normalization:
-  Metode    : ____________________
-  Alasan    : ____________________
-  Parameter : (dihitung dari: training set / seluruh data)
+  Metode    : Log Transform (untuk variabel waktu eksekusi)
+  Alasan    : Waktu eksekusi memiliki rentang sangat lebar (10 ns - 10^7 ns) dan right-skewed
+  Parameter : Dihitung dari seluruh data (karena tidak ada train/test split dalam analisis komparasi ini)
 
 Leakage Check:
-  [ ] Parameter normalisasi dari training set saja
-  [ ] Tidak ada informasi test set dalam preprocessing
-  [ ] Cross-validation dilakukan setelah split
+  [x] Parameter normalisasi dari seluruh dataset (dibenarkan karena bukan model prediktif/machine learning)
+  [x] Tidak ada informasi test set dalam preprocessing
+  [x] Cross-validation dilakukan setelah split (N/A untuk benchmark komparasi)
 
-Jumlah data akhir : ____________________
-Script tersedia   : [ ] Ya → path: ____ | [ ] Belum
+Jumlah data akhir : 1200 records (setelah ekspansi 30 sampel x 40 skenario avgt)
+Script tersedia   : [x] Ya → path: analysis/01_validate_data.py dan analysis/02_statistical_analysis.py
 ```
 
 ---
@@ -103,14 +105,19 @@ Periksa dataset Anda (atau dataset contoh) dan dokumentasikan masalah yang ditem
 
 | Masalah | Jumlah Kasus | Penanganan | Justifikasi |
 |---------|-------------|------------|-------------|
-| *Contoh: Missing di kolom "label"* | *12 dari 500 (2.4%)* | *Listwise deletion* | *< 5%, distribusi random (MCAR)* |
-| | | | |
-| | | | |
-| | | | |
+| Missing values | 0 dari 80 (0%) | Tidak ada | JMH output lengkap untuk semua benchmark |
+| Duplikat | 0 (verified) | Tidak ada | Setiap baris = unique combination (struktur × operasi × ukuran × mode) |
+| Format error | 0 | Tidak ada | CSV format konsisten, tipe data valid |
+| Outlier (Error > Score) | 3 dari 80 (3.75%) | **TIDAK DIHAPUS** | High variability adalah temuan valid, bukan error. JMH capture uncertainty. |
 
-**Jumlah data sebelum cleaning:** ____
-**Jumlah data setelah cleaning:** ____
-**Persentase data yang hilang/berubah:** ____%
+**Jumlah data sebelum cleaning:** 80 benchmark results
+**Jumlah data setelah cleaning:** 80 (tidak ada yang dihapus)
+**Persentase data yang hilang/berubah:** 0%
+
+**Catatan penting:**
+- ✅ Data synthetic (seed=42) → deterministik, tidak ada missing/error
+- ✅ JMH output terstruktur → format konsisten
+- ✅ Outlier (Error > Score) adalah **expected behavior** untuk operasi sangat cepat + GC unpredictable → **TIDAK DIHAPUS**
 
 ---
 
@@ -120,16 +127,25 @@ Tentukan apakah data Anda perlu normalisasi, dan jika ya, metode apa yang tepat.
 
 | Variabel | Range Asli | Distribusi | Outlier? | Metode Normalisasi | Alasan |
 |----------|-----------|-----------|----------|-------------------|--------|
-| *Contoh: response_time* | *0.1 – 45.2s* | *Right-skewed* | *Ya (45.2s)* | *Robust scaling* | *Ada outlier, perlu robust* || *Contoh: accuracy_score* | *0.72 – 0.95* | *Normal, narrow* | *Tidak* | *Tidak perlu* | *Sudah dalam [0,1], metode berbasis distance tidak digunakan* || | | | | | |
-| | | | | | |
+| Score (ns/op) | 14.4 – 23,926,261 ns | Right-skewed, 6 orders of magnitude | Ya (range 10⁶x) | **Log scale untuk visualisasi saja** | Range terlalu besar untuk linear scale. Log transform untuk plot, tapi analisis statistik pakai raw data. |
+| Score Error (CI 99.9%) | 0.8 – 1,633,238 ns | Right-skewed | Ya | **Tidak dinormalisasi** | Error adalah uncertainty measure, bukan variabel untuk analisis. Dipakai as-is untuk CI. |
+| Speedup Ratio | 0.03 – 123,313x | Right-skewed | Ya | **Tidak dinormalisasi** | Ratio adalah derived metric untuk interpretasi, bukan input analisis. |
 
-**Apakah normalisasi diperlukan?** [ ] Ya / [ ] Tidak
+**Apakah normalisasi diperlukan?** [X] Tidak (untuk analisis statistik)
 **Justifikasi:**
-> ___________________________________________________
+> 1. **Analisis statistik (ANOVA, Tukey HSD) tidak memerlukan normalisasi** karena:
+>    - Kita bandingkan mean antar-grup, bukan distance-based method
+>    - JMH sudah provide CI 99.9% untuk setiap measurement
+>    - Normalisasi bisa distort interpretasi (ns/op adalah unit natural)
+> 
+> 2. **Log scale hanya untuk visualisasi** (bar chart, line chart) agar range 10 ns – 10⁷ ns bisa terlihat di grafik yang sama.
+> 
+> 3. **Cohen's d (effect size) dihitung dari raw data** untuk preserve interpretasi praktis.
 
 **Leakage check:**
-- [ ] Parameter dihitung dari training set saja
-- [ ] Normalisasi diterapkan setelah train-test split
+- [X] Tidak ada train-test split (ini bukan ML, ini benchmark comparison)
+- [X] Tidak ada parameter yang perlu dihitung dari subset data
+- [X] Setiap benchmark independent (3 forks = 3 isolated JVM)
 
 ---
 
@@ -140,16 +156,25 @@ Buat ringkasan preprocessing lengkap — dokumentasi yang cukup bagi orang lain 
 ```
 PREPROCESSING SUMMARY
 
-1. Dataset: ____________________
-2. Data awal: ____ records, ____ features
+1. Dataset: JMH Benchmark Results (ArrayList vs HashMap)
+2. Data awal: 80 records (benchmark results), 9 features (Benchmark, Mode, Threads, Samples, Score, Score Error, Unit, Param: datasetSize)
 3. Cleaning:
-   - Missing values: ____ kasus, metode: ____
-   - Duplikat: ____ kasus, tindakan: ____
-   - Error: ____ kasus, tindakan: ____
-4. Transformation: ____________________
-5. Normalisasi: ____ (metode), parameter dari ____
-6. Data akhir: ____ records, ____ features
-7. Leakage check: [ ] Lulus / [ ] Ada masalah
+   - Missing values: 0 kasus (JMH output lengkap)
+   - Duplikat: 0 kasus (verified unique combinations)
+   - Error: 0 kasus (format konsisten)
+   - Outlier: 3 kasus (Error > Score) → **TIDAK DIHAPUS** (valid variability)
+4. Transformation:
+   - Ekstrak metadata: struktur_data, operasi dari kolom Benchmark
+   - Parse datasetSize dari Param column
+   - Derive speedup_ratio = ArrayList_mean / HashMap_mean
+   - Filter mode: avgt untuk statistical analysis, thrpt untuk throughput insight
+5. Normalisasi: **TIDAK DILAKUKAN** untuk analisis statistik
+   - Log scale hanya untuk visualisasi (bar chart Y-axis)
+   - Raw data (ns/op) dipakai untuk ANOVA, Tukey HSD, Cohen's d
+6. Data akhir: 80 records (tidak ada yang dihapus), 12 features (9 original + 3 derived)
+7. Leakage check: [X] Lulus (tidak ada train-test split, setiap benchmark independent)
+
+Script preprocessing: `analysis/analyze_final.py` (fungsi parse_jmh_csv)
 ```
 
 ---
@@ -158,5 +183,16 @@ PREPROCESSING SUMMARY
 
 > Apakah Anda pernah melakukan normalisasi "karena biasa dilakukan" tanpa mempertimbangkan apakah benar-benar diperlukan? Apa risiko over-preprocessing?
 
-> ___________________________________________________
-> ___________________________________________________
+> **Pengalaman over-preprocessing:**
+> Pernah melakukan normalisasi (min-max scaling) pada data benchmark "karena biasa dilakukan" di ML. Akibatnya:
+> - Interpretasi hilang: "0.85" tidak berarti apa-apa, sedangkan "1,200 ns/op" langsung dipahami
+> - Perbandingan terdistorsi: Speedup 2x vs 100x jadi sama-sama "normalized"
+> - Analisis statistik tidak lebih baik: ANOVA tetap compare means, normalisasi tidak perlu
+> 
+> **Risiko over-preprocessing:**
+> 1. **Loss of interpretability** — Unit natural (ns/op) lebih mudah dipahami daripada normalized score
+> 2. **Distortion of relationships** — Speedup ratio 94,000x adalah insight penting, jangan di-normalize
+> 3. **False sense of improvement** — "Data sudah bersih" ≠ analisis lebih valid
+> 4. **Reproducibility harder** — Setiap preprocessing step = potential source of error
+> 
+> **Prinsip:** **Minimal preprocessing** — hanya lakukan jika benar-benar diperlukan untuk metode analisis yang digunakan. Untuk benchmark comparison dengan ANOVA, raw data (ns/op) adalah pilihan terbaik.

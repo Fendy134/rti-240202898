@@ -1,4 +1,4 @@
-@# WS-09: Implementation & Environment
+# WS-09: Implementation & Environment
 
 > **Bab 9 — Implementasi Riset & Kontrol Lingkungan**
 
@@ -102,7 +102,7 @@ Reproducibility Check:
 Dokumentasikan environment untuk eksperimen Anda 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | Intel Core i7  |
+| CPU | Intel Core i3  |
 | RAM | 16 GB DDR4 |
 | GPU | CPU-only (tidak menggunakan GPU untuk benchmark) |
 | OS | Windows 11 Pro |
@@ -167,7 +167,7 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 **Hardware:**
 - CPU: Intel Core i3
-- RAM: 16 GB DDR4
+- RAM: 8 GB DDR4
 - Storage: SSD (untuk fast I/O)
 
 **Software:**
